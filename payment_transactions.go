@@ -2,7 +2,6 @@ package authorizenet
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
@@ -34,6 +33,9 @@ func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*Transact
 				PaymentProfileId: profile.PaymentID,
 			},
 		},
+		Order: &Order{
+			InvoiceNumber: tranx.InvoiceId,
+		},
 	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
@@ -46,6 +48,9 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 		Amount:          tranx.Amount,
 		Payment: &Payment{
 			CreditCard: tranx.CreditCard,
+		},
+		Order: &Order{
+			InvoiceNumber: tranx.InvoiceId,
 		},
 	}
 	res, err := c.SendTransactionRequest(new)
@@ -60,6 +65,9 @@ func (tranx NewTransaction) Refund(c Client) (*TransactionResponse, error) {
 		RefTransId:      tranx.RefTransId,
 		Payment: &Payment{
 			CreditCard: tranx.CreditCard,
+		},
+		Order: &Order{
+			InvoiceNumber: tranx.InvoiceId,
 		},
 	}
 	res, err := c.SendTransactionRequest(new)
@@ -115,7 +123,6 @@ func GetHostedPaymentPage() {
 }
 
 func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionResponse, error) {
-	fmt.Printf("Sending Transaction Request: %+v\n", input)
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: c.GetAuthentication(),
