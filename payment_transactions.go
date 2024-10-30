@@ -49,6 +49,7 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 		Payment: &Payment{
 			CreditCard: tranx.CreditCard,
 		},
+		BillTo: tranx.BillTo,
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},

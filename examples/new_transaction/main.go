@@ -2,28 +2,35 @@ package main
 
 import (
 	"fmt"
-	"github.com/hanzoai/authorizenet-go"
-	"os"
+	"github.com/tirpitz0509/authorizenet-go"
 )
 
 var newTransactionId string
 
 func main() {
 
+	apiName := "25FnYp3Q2"
+	apiKey := "68J3Uhw52tfQZx8C"
 	client := authorizenet.New(apiName, apiKey, true)
 
-	if client.IsConnected() {
+	connected, err := client.IsConnected()
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+
+	if connected {
 		fmt.Println("Connected to Authorize.net!")
 	}
 
-	client.ChargeCustomer()
-	client.VoidTransaction()
+	ChargeCustomer(client)
+	//client.VoidTransaction()
 }
 
-func ChargeCustomer() {
+func ChargeCustomer(client *authorizenet.Client) {
 
-	newTransaction := client.NewTransaction{
-		Amount: "13.75",
+	newTransaction := authorizenet.NewTransaction{
+		Amount: "14.75",
 		CreditCard: authorizenet.CreditCard{
 			CardNumber:     "4012888818888",
 			ExpirationDate: "08/25",
@@ -39,8 +46,15 @@ func ChargeCustomer() {
 			Country:     "USA",
 			PhoneNumber: "8885555555",
 		},
+		RefId:     "123123",
+		InvoiceId: "123123",
 	}
-	res := newTransaction.Charge()
+	res, err := newTransaction.Charge(*client)
+
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
 
 	if res.Approved() {
 		newTransactionId = res.TransactionID()
@@ -48,12 +62,12 @@ func ChargeCustomer() {
 	}
 }
 
-func VoidTransaction() {
+func VoidTransaction(client *authorizenet.Client) {
 
-	newTransaction := client.PreviousTransaction{
+	newTransaction := authorizenet.PreviousTransaction{
 		RefId: newTransactionId,
 	}
-	res := newTransaction.Void()
+	res, _ := newTransaction.Void(*client)
 	if res.Approved() {
 		fmt.Println("Transaction was Voided!")
 	}
