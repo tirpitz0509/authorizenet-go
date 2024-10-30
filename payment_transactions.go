@@ -2,6 +2,7 @@ package authorizenet
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
@@ -114,6 +115,7 @@ func GetHostedPaymentPage() {
 }
 
 func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionResponse, error) {
+	fmt.Printf("Sending Transaction Request: %+v\n", input)
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: c.GetAuthentication(),
