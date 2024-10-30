@@ -15,7 +15,7 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		BillTo:   tranx.BillTo,
 		AuthCode: tranx.AuthCode,
 	}
-	res, err := c.SendTransactionRequest(new)
+	res, err := c.SendTransactionRequest(new, tranx.RefId)
 	return res, err
 }
 
@@ -31,7 +31,7 @@ func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*Transact
 			},
 		},
 	}
-	res, err := c.SendTransactionRequest(new)
+	res, err := c.SendTransactionRequest(new, tranx.RefId)
 	return res, err
 }
 
@@ -44,7 +44,7 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	res, err := c.SendTransactionRequest(new)
+	res, err := c.SendTransactionRequest(new, tranx.RefId)
 	return res, err
 }
 
@@ -58,7 +58,7 @@ func (tranx NewTransaction) Refund(c Client) (*TransactionResponse, error) {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	res, err := c.SendTransactionRequest(new)
+	res, err := c.SendTransactionRequest(new, tranx.RefId)
 	return res, err
 }
 
@@ -68,7 +68,7 @@ func (tranx PreviousTransaction) Void(c Client) (*TransactionResponse, error) {
 		TransactionType: "voidTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	res, err := c.SendTransactionRequest(new)
+	res, err := c.SendTransactionRequest(new, tranx.RefId)
 	return res, err
 }
 
@@ -78,7 +78,7 @@ func (tranx PreviousTransaction) Capture(c Client) (*TransactionResponse, error)
 		TransactionType: "priorAuthCaptureTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	res, err := c.SendTransactionRequest(new)
+	res, err := c.SendTransactionRequest(new, tranx.RefId)
 	return res, err
 }
 
@@ -110,11 +110,12 @@ func GetHostedPaymentPage() {
 
 }
 
-func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionResponse, error) {
+func (c Client) SendTransactionRequest(input TransactionRequest, refId string) (*TransactionResponse, error) {
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: c.GetAuthentication(),
 			TransactionRequest:     input,
+			RefID:                  refId,
 		},
 	}
 	req, err := json.Marshal(action)

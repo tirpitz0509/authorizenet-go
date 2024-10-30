@@ -38,10 +38,10 @@ subscriptions := customerInfo.Subscriptions()
 # Usage
 * Import package
 ```
-go get github.com/hanzoai/authorizenet-go
+go get github.com/tirpitz0509/authorizenet-go
 ```
 ```go
-import "github.com/hanzoai/authorizenet-go"
+import "github.com/tirpitz0509/authorizenet-go"
 ```
 
 ## Set HTTP Client
