@@ -136,7 +136,8 @@ type NewTransaction struct {
 	RefTransId string     `json:"refTransId,omitempty"`
 	CreditCard CreditCard `json:"payment,omitempty"`
 	AuthCode   string     `json:"authCode,omitempty"`
-	BillTo     *BillTo    `json:",omitempty"`
+	BillTo     *BillTo    `json:"billTo,omitempty"`
+	RefId      string     `json:"refId,omitempty"`
 }
 
 type PreviousTransaction struct {
