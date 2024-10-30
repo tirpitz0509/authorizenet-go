@@ -14,8 +14,11 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		},
 		BillTo:   tranx.BillTo,
 		AuthCode: tranx.AuthCode,
+		Order: &Order{
+			InvoiceNumber: tranx.InvoiceId,
+		},
 	}
-	res, err := c.SendTransactionRequest(new, tranx.RefId)
+	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
 
@@ -31,7 +34,7 @@ func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*Transact
 			},
 		},
 	}
-	res, err := c.SendTransactionRequest(new, tranx.RefId)
+	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
 
@@ -44,7 +47,7 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	res, err := c.SendTransactionRequest(new, tranx.RefId)
+	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
 
@@ -58,7 +61,7 @@ func (tranx NewTransaction) Refund(c Client) (*TransactionResponse, error) {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	res, err := c.SendTransactionRequest(new, tranx.RefId)
+	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
 
@@ -68,7 +71,7 @@ func (tranx PreviousTransaction) Void(c Client) (*TransactionResponse, error) {
 		TransactionType: "voidTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	res, err := c.SendTransactionRequest(new, tranx.RefId)
+	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
 
@@ -78,7 +81,7 @@ func (tranx PreviousTransaction) Capture(c Client) (*TransactionResponse, error)
 		TransactionType: "priorAuthCaptureTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	res, err := c.SendTransactionRequest(new, tranx.RefId)
+	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
 
@@ -110,12 +113,11 @@ func GetHostedPaymentPage() {
 
 }
 
-func (c Client) SendTransactionRequest(input TransactionRequest, refId string) (*TransactionResponse, error) {
+func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionResponse, error) {
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: c.GetAuthentication(),
 			TransactionRequest:     input,
-			RefID:                  refId,
 		},
 	}
 	req, err := json.Marshal(action)
@@ -265,6 +267,11 @@ type UserField struct {
 	Value string `json:"value,omitempty"`
 }
 
+type Order struct {
+	InvoiceNumber string `json:"invoiceNumber,omitempty"`
+	Description   string `json:"description,omitempty"`
+}
+
 type TransactionRequest struct {
 	TransactionType string     `json:"transactionType,omitempty"`
 	Amount          string     `json:"amount,omitempty"`
@@ -273,6 +280,7 @@ type TransactionRequest struct {
 	AuthCode        string     `json:"authCode,omitempty"`
 	Profile         *Profile   `json:"profile,omitempty"`
 	LineItems       *LineItems `json:"lineItems,omitempty"`
+	Order           *Order     `json:"order,omitempty"`
 	//Tax                 Tax                 `json:"tax,omitempty"`
 	//Duty                Duty                `json:"duty,omitempty"`
 	//Shipping            Shipping            `json:"shipping,omitempty"`
