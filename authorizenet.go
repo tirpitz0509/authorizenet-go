@@ -14,7 +14,7 @@ type Client struct {
 	APIName   string
 	APIKey    string
 	Endpoint  string
-	Mode	  string
+	Mode      string
 	Client    *http.Client
 	Live      bool
 	Connected bool
@@ -36,7 +36,7 @@ func New(apiName string, apiKey string, testMode bool) *Client {
 		APIKey:   apiKey,
 		APIName:  apiName,
 		Endpoint: endpoint,
-		Mode: mode,
+		Mode:     mode,
 		Client:   &http.Client{Timeout: defaultHTTPTimeout},
 	}
 }
@@ -61,6 +61,9 @@ func (c *Client) GetAuthentication() MerchantAuthentication {
 }
 
 func (c *Client) SendRequest(input []byte) ([]byte, error) {
+	if c.Verbose {
+		fmt.Printf("Request: %s\n", input)
+	}
 	req, err := http.NewRequest("POST", c.Endpoint, bytes.NewBuffer(input))
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := c.Client.Do(req)
