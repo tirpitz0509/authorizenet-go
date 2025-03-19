@@ -2,6 +2,7 @@ package authorizenet
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
@@ -133,6 +134,10 @@ func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionRe
 	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
+	}
+
+	if input.Debug {
+		fmt.Printf("Request: %s\n", req)
 	}
 	res, err := c.SendRequest(req)
 	var dat TransactionResponse
@@ -283,24 +288,26 @@ type Order struct {
 }
 
 type TransactionRequest struct {
-	TransactionType string     `json:"transactionType,omitempty"`
-	Amount          string     `json:"amount,omitempty"`
-	Payment         *Payment   `json:"payment,omitempty"`
-	RefTransId      string     `json:"refTransId,omitempty"`
-	AuthCode        string     `json:"authCode,omitempty"`
-	Profile         *Profile   `json:"profile,omitempty"`
-	LineItems       *LineItems `json:"lineItems,omitempty"`
-	Order           *Order     `json:"order,omitempty"`
-	//Tax                 Tax                 `json:"tax,omitempty"`
-	//Duty                Duty                `json:"duty,omitempty"`
-	//Shipping            Shipping            `json:"shipping,omitempty"`
-	//PoNumber            string              `json:"poNumber,omitempty"`
-	//Customer            Customer            `json:"customer,omitempty"`
-	BillTo     *BillTo  `json:"billTo,omitempty"`
-	ShipTo     *Address `json:"shipTo,omitempty"`
-	CustomerIP string   `json:"customerIP,omitempty"`
-	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"`
-	//UserFields          UserFields          `json:"userFields,omitempty"`
+	TransactionType string     `json:"transactionType,omitempty"` //
+	Amount          string     `json:"amount,omitempty"`          //
+	Payment         *Payment   `json:"payment,omitempty"`         //
+	RefTransId      string     `json:"refTransId,omitempty"`      //
+	AuthCode        string     `json:"authCode,omitempty"`        //
+	Profile         *Profile   `json:"profile,omitempty"`         //
+	LineItems       *LineItems `json:"lineItems,omitempty"`       //
+	Order           *Order     `json:"order,omitempty"`           //
+	BillTo          *BillTo    `json:"billTo,omitempty"`          //
+	ShipTo          *Address   `json:"shipTo,omitempty"`          //
+	CustomerIP      string     `json:"customerIP,omitempty"`      //
+	Debug           bool       `json:"debug,omitempty"`           //
+	//Tax                 Tax                 `json:"tax,omitempty"` //
+	//Duty                Duty                `json:"duty,omitempty"` //
+	//Shipping            Shipping            `json:"shipping,omitempty"` //
+	//PoNumber            string              `json:"poNumber,omitempty"` //
+	//Customer            Customer            `json:"customer,omitempty"` //
+	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"` //
+	//UserFields          UserFields          `json:"userFields,omitempty"` //
+
 }
 
 type Address struct {
