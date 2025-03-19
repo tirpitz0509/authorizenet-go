@@ -18,6 +18,7 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},
+		Debug: tranx.Debug,
 	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
@@ -156,6 +157,7 @@ type NewTransaction struct {
 	AuthCode   string     `json:"authCode,omitempty"`
 	BillTo     *BillTo    `json:"billTo,omitempty"`
 	RefId      string     `json:"refId,omitempty"`
+	Debug      bool       `json:"debug,omitempty"`
 }
 
 type PreviousTransaction struct {
