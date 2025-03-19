@@ -2,7 +2,6 @@ package authorizenet
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
@@ -18,7 +17,6 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},
-		Debug: tranx.Debug,
 	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
@@ -136,10 +134,6 @@ func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionRe
 	if err != nil {
 		return nil, err
 	}
-
-	if input.Debug {
-		fmt.Printf("Request: %s\n", req)
-	}
 	res, err := c.SendRequest(req)
 	var dat TransactionResponse
 	err = json.Unmarshal(res, &dat)
@@ -157,7 +151,6 @@ type NewTransaction struct {
 	AuthCode   string     `json:"authCode,omitempty"`
 	BillTo     *BillTo    `json:"billTo,omitempty"`
 	RefId      string     `json:"refId,omitempty"`
-	Debug      bool       `json:"debug,omitempty"`
 }
 
 type PreviousTransaction struct {
@@ -301,12 +294,12 @@ type TransactionRequest struct {
 	BillTo          *BillTo    `json:"billTo,omitempty"`          //
 	ShipTo          *Address   `json:"shipTo,omitempty"`          //
 	CustomerIP      string     `json:"customerIP,omitempty"`      //
-	Debug           bool       `json:"debug,omitempty"`           //
 	//Tax                 Tax                 `json:"tax,omitempty"` //
 	//Duty                Duty                `json:"duty,omitempty"` //
 	//Shipping            Shipping            `json:"shipping,omitempty"` //
 	//PoNumber            string              `json:"poNumber,omitempty"` //
 	//Customer            Customer            `json:"customer,omitempty"` //
+
 	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"` //
 	//UserFields          UserFields          `json:"userFields,omitempty"` //
 
