@@ -298,10 +298,10 @@ type TransactionRequest struct {
 	//Duty                Duty                `json:"duty,omitempty"` //
 	//Shipping            Shipping            `json:"shipping,omitempty"` //
 	//PoNumber            string              `json:"poNumber,omitempty"` //
-	//Customer            Customer            `json:"customer,omitempty"` //
+	Customer PaymentCustomer `json:"customer,omitempty"` //
 
 	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"` //
-	//UserFields          UserFields          `json:"userFields,omitempty"` //
+	UserFields UserFields `json:"userFields,omitempty"` //
 
 }
 
@@ -317,4 +317,10 @@ type Address struct {
 	PhoneNumber       string `json:"phoneNumber,omitempty"`
 	FaxNumber         string `json:"faxNumber,omitempty"`
 	CustomerAddressID string `json:"customerAddressId,omitempty"`
+}
+
+type PaymentCustomer struct {
+	CustomerType string `json:"type,omitempty"`
+	ID           string `json:"id,omitempty"`
+	Email        string `json:"email,omitempty"`
 }
