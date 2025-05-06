@@ -100,6 +100,7 @@ type BillTo struct {
 	Zip         string `json:"zip,omitempty"`
 	Country     string `json:"country,omitempty"`
 	PhoneNumber string `json:"phoneNumber,omitempty"`
+	Email       string `json:"email,omitempty"`
 }
 
 type PaymentSchedule struct {
