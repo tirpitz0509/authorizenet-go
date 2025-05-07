@@ -56,6 +56,9 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},
+		CustomerData: tranx.CustomerData,
+		CustomerIP:   tranx.CustomerIP,
+		UserFields:   tranx.UserFields,
 	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
