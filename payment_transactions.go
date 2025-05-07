@@ -17,6 +17,8 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},
+		Customer:   tranx.Customer,
+		CustomerIP: tranx.CustomerIP,
 	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
@@ -144,13 +146,16 @@ func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionRe
 }
 
 type NewTransaction struct {
-	Amount     string     `json:"amount,omitempty"`
-	InvoiceId  string     `json:"invoiceId,omitempty"`
-	RefTransId string     `json:"refTransId,omitempty"`
-	CreditCard CreditCard `json:"payment,omitempty"`
-	AuthCode   string     `json:"authCode,omitempty"`
-	BillTo     *BillTo    `json:"billTo,omitempty"`
-	RefId      string     `json:"refId,omitempty"`
+	Amount     string           `json:"amount,omitempty"`
+	InvoiceId  string           `json:"invoiceId,omitempty"`
+	RefTransId string           `json:"refTransId,omitempty"`
+	CreditCard CreditCard       `json:"payment,omitempty"`
+	AuthCode   string           `json:"authCode,omitempty"`
+	BillTo     *BillTo          `json:"billTo,omitempty"`
+	RefId      string           `json:"refId,omitempty"`
+	Customer   *PaymentCustomer `json:"customer,omitempty"`
+	CustomerIP string           `json:"customerIP,omitempty"`
+	UserFields *UserFields      `json:"userFields,omitempty"`
 }
 
 type PreviousTransaction struct {
