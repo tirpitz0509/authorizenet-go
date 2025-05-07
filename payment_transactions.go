@@ -17,8 +17,9 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},
-		Customer:   tranx.Customer,
-		CustomerIP: tranx.CustomerIP,
+		CustomerData: tranx.CustomerData,
+		CustomerIP:   tranx.CustomerIP,
+		UserFields:   tranx.UserFields,
 	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
@@ -146,16 +147,16 @@ func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionRe
 }
 
 type NewTransaction struct {
-	Amount     string           `json:"amount,omitempty"`
-	InvoiceId  string           `json:"invoiceId,omitempty"`
-	RefTransId string           `json:"refTransId,omitempty"`
-	CreditCard CreditCard       `json:"payment,omitempty"`
-	AuthCode   string           `json:"authCode,omitempty"`
-	BillTo     *BillTo          `json:"billTo,omitempty"`
-	RefId      string           `json:"refId,omitempty"`
-	Customer   *PaymentCustomer `json:"customer,omitempty"`
-	CustomerIP string           `json:"customerIP,omitempty"`
-	UserFields *UserFields      `json:"userFields,omitempty"`
+	Amount       string        `json:"amount,omitempty"`
+	InvoiceId    string        `json:"invoiceId,omitempty"`
+	RefTransId   string        `json:"refTransId,omitempty"`
+	CreditCard   CreditCard    `json:"payment,omitempty"`
+	AuthCode     string        `json:"authCode,omitempty"`
+	BillTo       *BillTo       `json:"billTo,omitempty"`
+	RefId        string        `json:"refId,omitempty"`
+	CustomerData *CustomerData `json:"customerData,omitempty"`
+	CustomerIP   string        `json:"customerIP,omitempty"`
+	UserFields   *UserFields   `json:"userFields,omitempty"`
 }
 
 type PreviousTransaction struct {
@@ -303,10 +304,10 @@ type TransactionRequest struct {
 	//Duty                Duty                `json:"duty,omitempty"` //
 	//Shipping            Shipping            `json:"shipping,omitempty"` //
 	//PoNumber            string              `json:"poNumber,omitempty"` //
-	Customer *PaymentCustomer `json:"customer,omitempty"` //
+	CustomerData *CustomerData `json:"customerData,omitempty"` //
 
 	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"` //
-	UserFields UserFields `json:"userFields,omitempty"` //
+	UserFields *UserFields `json:"userFields,omitempty"` //
 
 }
 
@@ -324,7 +325,7 @@ type Address struct {
 	CustomerAddressID string `json:"customerAddressId,omitempty"`
 }
 
-type PaymentCustomer struct {
+type CustomerData struct {
 	CustomerType string `json:"type,omitempty"`
 	ID           string `json:"id,omitempty"`
 	Email        string `json:"email,omitempty"`
