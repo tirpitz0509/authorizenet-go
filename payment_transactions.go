@@ -298,7 +298,7 @@ type TransactionRequest struct {
 	//Duty                Duty                `json:"duty,omitempty"` //
 	//Shipping            Shipping            `json:"shipping,omitempty"` //
 	//PoNumber            string              `json:"poNumber,omitempty"` //
-	Customer PaymentCustomer `json:"customer,omitempty"` //
+	Customer *PaymentCustomer `json:"customer,omitempty"` //
 
 	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"` //
 	UserFields UserFields `json:"userFields,omitempty"` //
