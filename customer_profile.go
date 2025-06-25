@@ -166,7 +166,7 @@ func (c *Client) CreateProfile(profile Profile) (*CustomProfileResponse, error) 
 		CreateCustomerProfile: CreateCustomerProfile{
 			MerchantAuthentication: c.GetAuthentication(),
 			Profile:                profile,
-			ValidationMode:         c.Mode,
+			ValidationMode:         c.ValidationMode,
 		},
 	}
 	req, err := json.Marshal(action)

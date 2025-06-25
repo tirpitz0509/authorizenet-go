@@ -11,14 +11,15 @@ import (
 const defaultHTTPTimeout = 80 * time.Second
 
 type Client struct {
-	APIName   string
-	APIKey    string
-	Endpoint  string
-	Mode      string
-	Client    *http.Client
-	Live      bool
-	Connected bool
-	Verbose   bool
+	APIName        string
+	APIKey         string
+	Endpoint       string
+	Mode           string
+	Client         *http.Client
+	Live           bool
+	Connected      bool
+	Verbose        bool
+	ValidationMode string
 }
 
 func New(apiName string, apiKey string, testMode bool) *Client {
