@@ -23,7 +23,7 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 	}
 	if tranx.CreateProfile {
 		new.Profile = &Profile{
-			CreateProfile: true,
+			ProfileCreate: true,
 		}
 	}
 	res, err := c.SendTransactionRequest(new)
@@ -67,7 +67,7 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 	}
 	if tranx.CreateProfile {
 		new.Profile = &Profile{
-			CreateProfile: true,
+			ProfileCreate: true,
 		}
 	}
 	res, err := c.SendTransactionRequest(new)
