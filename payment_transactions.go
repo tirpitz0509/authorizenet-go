@@ -41,6 +41,7 @@ func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*Transact
 				PaymentProfileId: profile.PaymentID,
 			},
 		},
+		BillTo: tranx.BillTo,
 		Order: &Order{
 			InvoiceNumber: tranx.InvoiceId,
 		},
