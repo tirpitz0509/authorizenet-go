@@ -45,6 +45,9 @@ func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*Transact
 			InvoiceNumber: tranx.InvoiceId,
 		},
 	}
+	if tranx.Authorize {
+		new.TransactionType = "authOnlyTransaction"
+	}
 	res, err := c.SendTransactionRequest(new)
 	return res, err
 }
@@ -171,6 +174,7 @@ type NewTransaction struct {
 	CustomerIP    string        `json:"customerIP,omitempty"`
 	UserFields    *UserFields   `json:"userFields,omitempty"`
 	CreateProfile bool          `json:"createProfile,omitempty"`
+	Authorize     bool          `json:"authorize,omitempty"`
 }
 
 type PreviousTransaction struct {
